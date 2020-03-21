@@ -1,5 +1,5 @@
-import { GameRepository } from './features/game/domain/game-repository'
+import { JoinGameCmd } from './features/game/application/join-game-cmd'
 
 export interface Dependencies {
-  gameRepository: GameRepository
+  joinGameCmd: JoinGameCmd
 }

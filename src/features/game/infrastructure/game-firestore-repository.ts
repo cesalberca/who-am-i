@@ -1,15 +1,23 @@
 import { GameRepository } from '../domain/game-repository'
 import { Id } from '../domain/id'
-import { RxFire } from './rx-fire'
 import { Observable, of } from 'rxjs'
-import { switchMapTo } from 'rxjs/operators'
+import { Player } from '../domain/player'
+import { RxFire } from './rx-fire'
+import { first, switchMap } from 'rxjs/operators'
 
 export class GameFirestoreRepository implements GameRepository {
-  constructor(private readonly firestore: firebase.app.App, private readonly rxFire: RxFire) {}
+  constructor(private readonly firebase: firebase.app.App, private readonly rxFire: RxFire) {}
 
-  private gamesRef = this.firestore.firestore().collection('games')
+  private gamesRef = this.firebase.firestore().collection('games')
 
-  join(id: Id): Observable<void> {
-    return this.rxFire.collectionData(this.gamesRef, id).pipe(switchMapTo(of(undefined)))
+  join(id: Id, player: Player): Observable<void> {
+    return this.rxFire.fromDocRef(this.gamesRef.doc(id)).pipe(
+      first(),
+      switchMap(document => {
+        const data = document.data()
+        document.ref.set({ players: [...(data?.players ?? []), player] })
+        return of(undefined)
+      })
+    )
   }
 }
