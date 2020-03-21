@@ -11,10 +11,10 @@ export const App: React.FC = () => {
     <Container.Provider value={dependencyTree}>
       <BrowserRouter>
         <Switch>
-          <Route>
+          <Route path="/" exact>
             <Lobby />
           </Route>
-          <Route>
+          <Route path="/games/:id">
             <Game />
           </Route>
         </Switch>
