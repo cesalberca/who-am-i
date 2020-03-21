@@ -9,6 +9,9 @@
   --gray-color: hsl(0, 0%, 90%);
   --gray-color-900: hsl(0, 0%, 50%);
 
+  --surface-color: var(--secondary-color);
+  --on-surface-color: white;
+
   /* Typography */
   --body-font: 'Work sans';
   --title-font: 'Work sans';

@@ -16,7 +16,7 @@ export const Lobby: React.FC = () => {
   return (
     <Page>
       <div>
-        <h2>Join lobby</h2>
+        <h2>Join a lobby</h2>
         <Input label="Id of lobby" value={id} onChange={setId} />
         <Input label="Your name" value={name} onChange={setName} />
         <Input label="The name of the celebrity" value={celebrity} onChange={setCelebrity} />
