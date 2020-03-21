@@ -7,10 +7,11 @@ const cx = bind(styles)
 
 export const Page: React.FC = ({ children }) => {
   return (
-    <>
-      {' '}
+    <main>
       <Header></Header>
-      <div className={cx('page')}>{children}</div>
-    </>
+      <section className={cx('page')}>
+        <div className={cx('wrapper')}>{children}</div>
+      </section>
+    </main>
   )
 }

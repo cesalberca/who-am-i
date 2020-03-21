@@ -6,6 +6,10 @@ import { Input } from '../../../core/components/input'
 import { tap } from 'rxjs/operators'
 import { useHistory } from 'react-router'
 import { LobbyState } from './lobby-state'
+import { bind } from "../../../core/utils/bind";
+import styles from './lobby.module.css'
+
+const cx = bind(styles)
 
 export const Lobby: React.FC = () => {
   const container = useContext(Container)
@@ -15,7 +19,7 @@ export const Lobby: React.FC = () => {
   const history = useHistory()
   return (
     <Page>
-      <div>
+      <div className={cx('form')}>
         <h2>Join a lobby</h2>
         <Input label="Id of lobby" value={id} onChange={setId} />
         <Input label="Your name" value={name} onChange={setName} />

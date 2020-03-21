@@ -30,7 +30,7 @@ export const Game: React.FC = () => {
   return (
     <Page>
       {players.map(player => (
-        <p>
+        <p key={player.name}>
           {player.name} - {player.celebrity}
         </p>
       ))}
