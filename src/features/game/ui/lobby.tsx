@@ -13,7 +13,7 @@ export const Lobby: React.FC = () => {
   return (
     <Page>
       <div>
-        <h2>Join lobby</h2>
+        <h2>Join a lobby</h2>
         <Input label="Id of lobby" value={id} onChange={setId} />
         <Button
           onClick={() =>

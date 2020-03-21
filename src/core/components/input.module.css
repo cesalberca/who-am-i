@@ -1,0 +1,12 @@
+.input {
+  border-radius: 10px;
+  border-color: var(--primary-color);
+  padding: 5px;
+  background-color: var(--secondary-color);
+  border-style: solid;
+  color: inherit;
+}
+
+.input::placeholder {
+  color: inherit;
+}
