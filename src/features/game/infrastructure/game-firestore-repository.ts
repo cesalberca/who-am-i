@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs'
 import { Player } from '../domain/player'
 import { RxFire } from './rx-fire'
 import { first, switchMap } from 'rxjs/operators'
+import { Game } from '../domain/game'
 
 export class GameFirestoreRepository implements GameRepository {
   constructor(private readonly firebase: firebase.app.App, private readonly rxFire: RxFire) {}
@@ -19,5 +20,9 @@ export class GameFirestoreRepository implements GameRepository {
         return of(undefined)
       })
     )
+  }
+
+  find(id: string): Observable<Game | undefined> {
+    return this.rxFire.fromDocRef(this.gamesRef.doc(id)).pipe(switchMap(x => of(x.data() as Game)))
   }
 }

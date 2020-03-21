@@ -5,6 +5,7 @@ import { Container } from '../../../container'
 import { Input } from '../../../core/components/input'
 import { tap } from 'rxjs/operators'
 import { useHistory } from 'react-router'
+import { LobbyState } from './lobby-state'
 
 export const Lobby: React.FC = () => {
   const container = useContext(Container)
@@ -23,7 +24,7 @@ export const Lobby: React.FC = () => {
           onClick={() =>
             container.joinGameCmd
               .execute({ id, player: { name, celebrity } })
-              .pipe(tap(() => history.push(`/games/${id}`)))
+              .pipe(tap(() => history.push(`/games/${id}`, { playerName: name } as LobbyState)))
               .toPromise()
           }
         >
