@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router'
 import { Container } from '../../../container'
-import { Player } from '../domain/player'
 import { tap } from 'rxjs/operators'
 import { Page } from '../../../core/components/page'
 import { LobbyState } from './lobby-state'
@@ -12,7 +11,7 @@ export const Game: React.FC = () => {
   } = useLocation<LobbyState>()
   const { id } = useParams()
   const container = useContext(Container)
-  const [players, setPlayers] = useState<Player[]>([])
+  const [players, setPlayers] = useState<Record<string, string>>({})
 
   useEffect(() => {
     const subscription = container.getPlayersQry
@@ -29,9 +28,9 @@ export const Game: React.FC = () => {
 
   return (
     <Page>
-      {players.map(player => (
-        <p key={player.name}>
-          {player.name} - {player.celebrity}
+      {Object.entries(players).map(([player, celebrity]) => (
+        <p key={player}>
+          {player} - {celebrity}
         </p>
       ))}
     </Page>
