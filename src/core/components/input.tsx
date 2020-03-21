@@ -11,13 +11,11 @@ interface Props {
 
 export const Input: React.FC<Props> = ({ label, value, onChange }) => {
   return (
-    <label>
-      <input
-        className={cx('input')}
-        placeholder={label}
-        value={value}
-        onChange={event => onChange(event.target.value)}
-      />
-    </label>
+    <input
+      className={cx('input')}
+      placeholder={label}
+      value={value}
+      onChange={event => onChange(event.target.value)}
+    />
   )
 }

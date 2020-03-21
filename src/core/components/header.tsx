@@ -7,9 +7,9 @@ const cx = bind(styles)
 
 export const Header: React.FC = () => {
   return (
-    <>
+    <header className={cx('wrapper')}>
       <img src={logo} alt="logo"></img>
       <h1 className={cx('header')}> Who Am I ?</h1>
-    </>
+    </header>
   )
 }
