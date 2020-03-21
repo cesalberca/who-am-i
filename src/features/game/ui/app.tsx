@@ -1,6 +1,5 @@
 import React from 'react'
-import './App.css'
-import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Game } from './game'
 import { Lobby } from './lobby'
 import { Container } from '../../../container'
