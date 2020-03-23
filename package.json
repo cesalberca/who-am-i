@@ -6,7 +6,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "format": "prettier --write \"src/**/*.{ts,tsx,json,css,md}\"",
+    "format": "prettier --write \"{src,functions}/**/*.{ts,tsx,json,css,md}\"",
     "firebase": "firebase",
     "deploy": "npm run build && firebase deploy"
   },

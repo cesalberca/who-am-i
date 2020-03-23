@@ -6,7 +6,7 @@ import { Input } from '../../../core/components/input'
 import { tap } from 'rxjs/operators'
 import { useHistory } from 'react-router'
 import { LobbyState } from './lobby-state'
-import { bind } from "../../../core/utils/bind";
+import { bind } from '../../../core/utils/bind'
 import styles from './lobby.module.css'
 
 const cx = bind(styles)
