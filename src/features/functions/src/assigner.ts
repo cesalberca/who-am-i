@@ -1,8 +1,5 @@
 import { Player } from '../../../core/player'
-
-export interface RandomProvider {
-  provide(): number
-}
+import { RandomProvider } from './random-provider'
 
 export class Assigner {
   constructor(private readonly randomProvider: RandomProvider) {}

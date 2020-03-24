@@ -5,6 +5,6 @@ export interface Game {
   id: Id
   start?: Date
   end?: Date
-  assignees: Player[]
+  assignees: Record<string, string>
   players: Player[]
 }

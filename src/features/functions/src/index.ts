@@ -1,25 +1,27 @@
 import * as functions from 'firebase-functions'
+import { Assigner } from './assigner'
+import { Game } from '../../../core/game'
 
-export const onGameStart = functions.firestore.document('games/{gameId}').onUpdate((change, _context) => {
-  const data = change.after.data() as { start: Date } | undefined
-  const previousData = change.before.data() as { start: Date } | undefined
-  console.log({ data })
-  console.log({ previousData })
+export const onGameStart = functions.firestore
+  .document('games/{gameId}')
+  .onUpdate((change, _context) => {
+    const data = change.after.data() as Game | undefined
+    const previousData = change.before.data() as Game | undefined
 
-  if (data?.start === undefined) {
-    return null
-  }
+    if (data?.start === undefined || previousData?.start !== undefined) {
+      return null
+    }
 
-  if (previousData?.start !== undefined) {
-    return null
-  }
+    const assigner = new Assigner({
+      provide(): number {
+        return Math.random()
+      }
+    })
 
-  console.log('hi')
-
-  return change.after.ref.set(
-    {
-      assignees: 1
-    },
-    { merge: true }
-  )
-})
+    return change.after.ref.set(
+      {
+        assignees: assigner.assign(data.players)
+      },
+      { merge: true }
+    )
+  })
