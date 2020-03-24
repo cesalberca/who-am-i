@@ -1,8 +1,8 @@
 import { Query } from '../../../core/query'
-import { Player } from '../domain/player'
+import { Player } from '../../../core/player'
 import { Observable } from 'rxjs'
 import { GameRepository } from '../domain/game-repository'
-import { Id } from '../domain/id'
+import { Id } from '../../../core/id'
 import { map } from 'rxjs/operators'
 
 type Params = { id: Id; name: string }

@@ -1,10 +1,10 @@
 import { GameRepository } from '../domain/game-repository'
-import { Id } from '../domain/id'
+import { Id } from '../../../core/id'
 import { Observable, of } from 'rxjs'
-import { Player } from '../domain/player'
+import { Player } from '../../../core/player'
 import { RxFire } from './rx-fire'
 import { first, switchMap } from 'rxjs/operators'
-import { Game } from '../domain/game'
+import { Game } from '../../../core/game'
 
 export class GameFirestoreRepository implements GameRepository {
   constructor(private readonly firebase: firebase.app.App, private readonly rxFire: RxFire) {}

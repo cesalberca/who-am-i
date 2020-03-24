@@ -1,4 +1,4 @@
-import { Player } from '../../src/features/game/domain/player'
+import { Player } from '../../../core/player'
 
 export interface RandomProvider {
   provide(): number
