@@ -8,7 +8,11 @@ export const onGameStart = functions.firestore
     const data = change.after.data() as Game | undefined
     const previousData = change.before.data() as Game | undefined
 
-    if (data?.start === undefined || previousData?.start !== undefined) {
+    if (
+      data?.start === undefined ||
+      previousData?.start !== undefined ||
+      (data?.players?.length ?? 0) < 3
+    ) {
       return null
     }
 

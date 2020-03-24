@@ -1,6 +1,6 @@
 import { GameRepository } from '../domain/game-repository'
 import { Id } from '../../../core/id'
-import { Observable, of } from 'rxjs'
+import { from, Observable, of } from 'rxjs'
 import { Player } from '../../../core/player'
 import { RxFire } from './rx-fire'
 import { first, switchMap } from 'rxjs/operators'
@@ -16,9 +16,16 @@ export class GameFirestoreRepository implements GameRepository {
       first(),
       switchMap(document => {
         const data = document.data()
-        document.ref.set({ players: [...(data?.players ?? []), player] })
+        document.ref.set({ players: [...(data?.players ?? []), player] }, { merge: true })
         return of(undefined)
       })
+    )
+  }
+
+  start(id: Id): Observable<void> {
+    return this.rxFire.fromDocRef(this.gamesRef.doc(id)).pipe(
+      first(),
+      switchMap(document => from(document.ref.set({ start: new Date() }, { merge: true })))
     )
   }
 

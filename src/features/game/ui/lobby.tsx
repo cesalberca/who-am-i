@@ -1,13 +1,15 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Page } from '../../../core/components/page'
 import { Button } from '../../../core/components/button'
 import { Container } from '../../../container'
 import { Input } from '../../../core/components/input'
-import { tap } from 'rxjs/operators'
 import { useHistory } from 'react-router'
-import { LobbyState } from './lobby-state'
 import { bind } from '../../../core/utils/bind'
 import styles from './lobby.module.css'
+import { Player } from '../../../core/player'
+import { tap } from 'rxjs/operators'
+import { LobbyState } from './lobby-state'
+import { EMPTY, Subscription } from 'rxjs'
 
 const cx = bind(styles)
 
@@ -16,6 +18,20 @@ export const Lobby: React.FC = () => {
   const [id, setId] = useState('')
   const [name, setName] = useState('')
   const [celebrity, setCelebrity] = useState('')
+  const [lobbyPlayers, setLobbyPlayers] = useState<Player[]>([])
+  const [hasJoined, setHasJoined] = useState(false)
+  const { getPlayersQry, startGameCmd } = useContext(Container)
+
+  useEffect(() => {
+    let subscription: Subscription = EMPTY.subscribe()
+
+    if (id !== '') {
+      subscription = getPlayersQry.execute({ id }).subscribe(x => setLobbyPlayers(x))
+    }
+
+    return () => subscription.unsubscribe()
+  }, [id, getPlayersQry, hasJoined])
+
   const history = useHistory()
   return (
     <Page>
@@ -25,15 +41,30 @@ export const Lobby: React.FC = () => {
         <Input label="Your name" value={name} onChange={setName} />
         <Input label="The name of the celebrity" value={celebrity} onChange={setCelebrity} />
         <Button
-          onClick={() =>
-            container.joinGameCmd
-              .execute({ id, player: { name, celebrity } })
-              .pipe(tap(() => history.push(`/games/${id}`, { playerName: name } as LobbyState)))
-              .toPromise()
-          }
+          onClick={() => {
+            setHasJoined(!hasJoined)
+            container.joinGameCmd.execute({ id, player: { name, celebrity } }).toPromise()
+          }}
         >
           Join
         </Button>
+      </div>
+      <div>
+        {lobbyPlayers.map(player => (
+          <p key={player.name}>{player.name}</p>
+        ))}
+        {hasJoined && (
+          <Button
+            onClick={() => {
+              startGameCmd
+                .execute({ id })
+                .pipe(tap(() => history.push(`/games/${id}`, { playerName: name } as LobbyState)))
+                .toPromise()
+            }}
+          >
+            Start game
+          </Button>
+        )}
       </div>
     </Page>
   )

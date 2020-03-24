@@ -10,11 +10,11 @@ export const Game: React.FC = () => {
     state: { playerName }
   } = useLocation<LobbyState>()
   const { id } = useParams()
-  const container = useContext(Container)
+  const { getPlayerAssigneesQry } = useContext(Container)
   const [players, setPlayers] = useState<Record<string, string>>({})
 
   useEffect(() => {
-    const subscription = container.getPlayersQry
+    const subscription = getPlayerAssigneesQry
       .execute({ id: id!, name: playerName })
       .pipe(
         tap(x => {
@@ -24,7 +24,7 @@ export const Game: React.FC = () => {
       .subscribe()
 
     return () => subscription.unsubscribe()
-  }, [id])
+  }, [id, playerName, getPlayerAssigneesQry])
 
   return (
     <Page>
