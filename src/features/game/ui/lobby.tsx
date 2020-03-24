@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { Page } from '../../../core/components/page'
 import { Button } from '../../../core/components/button'
 import { Container } from '../../../container'
@@ -10,62 +10,93 @@ import { Player } from '../../../core/player'
 import { tap } from 'rxjs/operators'
 import { LobbyState } from './lobby-state'
 import { EMPTY, Subscription } from 'rxjs'
+import { reducer } from './lobby-reducer'
 
 const cx = bind(styles)
 
 export const Lobby: React.FC = () => {
-  const container = useContext(Container)
   const [id, setId] = useState('')
   const [name, setName] = useState('')
   const [celebrity, setCelebrity] = useState('')
   const [lobbyPlayers, setLobbyPlayers] = useState<Player[]>([])
-  const [hasJoined, setHasJoined] = useState(false)
-  const { getPlayersQry, startGameCmd } = useContext(Container)
+  const { getPlayersQry, startGameCmd, joinGameCmd, hasGameStartedQry } = useContext(Container)
+  const history = useHistory()
+
+  const [state, dispatch] = useReducer(reducer, {
+    status: 'initial',
+    name: '',
+    celebrity: '',
+    id: ''
+  })
+
+  useEffect(() => {
+    let subscription: Subscription = EMPTY.subscribe()
+    if (state.status === 'joined' || state.status === 'started') {
+      subscription = hasGameStartedQry
+        .execute({ id: state.id })
+        .pipe(
+          tap(hasGameStarted => {
+            if (hasGameStarted) {
+              history.push(`/games/${state.id}`, { playerName: state.name } as LobbyState)
+            }
+          })
+        )
+        .subscribe()
+    }
+    return () => subscription.unsubscribe()
+  }, [hasGameStartedQry, state.id, state.name, history, state.status])
+
+  useEffect(() => {
+    if (state.status === 'started') {
+      startGameCmd.execute({ id: state.id }).toPromise()
+    }
+  }, [startGameCmd, state.id, state.name, state.status])
 
   useEffect(() => {
     let subscription: Subscription = EMPTY.subscribe()
 
-    if (id !== '') {
-      subscription = getPlayersQry.execute({ id }).subscribe(x => setLobbyPlayers(x))
+    if (state.status === 'joined') {
+      joinGameCmd
+        .execute({ id: state.id, player: { name: state.name, celebrity: state.celebrity } })
+        .toPromise()
+      subscription = getPlayersQry.execute({ id: state.id }).subscribe(x => setLobbyPlayers(x))
     }
 
     return () => subscription.unsubscribe()
-  }, [id, getPlayersQry, hasJoined])
+  }, [state.id, state.status, state.name, state.celebrity, getPlayersQry, joinGameCmd])
 
-  const history = useHistory()
   return (
     <Page>
-      <div className={cx('form')}>
-        <h2>Join a lobby</h2>
-        <Input label="Id of lobby" value={id} onChange={setId} />
-        <Input label="Your name" value={name} onChange={setName} />
-        <Input label="The name of the celebrity" value={celebrity} onChange={setCelebrity} />
-        <Button
-          onClick={() => {
-            setHasJoined(!hasJoined)
-            container.joinGameCmd.execute({ id, player: { name, celebrity } }).toPromise()
-          }}
-        >
-          Join
-        </Button>
-      </div>
-      <div>
-        {lobbyPlayers.map(player => (
-          <p key={player.name}>{player.name}</p>
-        ))}
-        {hasJoined && (
+      {state.status}
+      {state.status === 'initial' && (
+        <div className={cx('form')}>
+          <h2>Join a lobby</h2>
+          <Input label="Id of lobby" value={id} onChange={setId} />
+          <Input label="Your name" value={name} onChange={setName} />
+          <Input label="The name of the celebrity" value={celebrity} onChange={setCelebrity} />
           <Button
             onClick={() => {
-              startGameCmd
-                .execute({ id })
-                .pipe(tap(() => history.push(`/games/${id}`, { playerName: name } as LobbyState)))
-                .toPromise()
+              dispatch({ type: 'join', name, celebrity, id })
+            }}
+          >
+            Join
+          </Button>
+        </div>
+      )}
+      {state.status === 'joined' && (
+        <div>
+          {lobbyPlayers.map(player => (
+            <p key={player.name}>{player.name}</p>
+          ))}
+          <Button
+            onClick={() => {
+              dispatch({ type: 'start' })
             }}
           >
             Start game
           </Button>
-        )}
-      </div>
+        </div>
+      )}
     </Page>
   )
 }
