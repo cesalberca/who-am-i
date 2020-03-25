@@ -32,4 +32,13 @@ export class GameFirestoreRepository implements GameRepository {
   find(id: string): Observable<Game | undefined> {
     return this.rxFire.fromDocRef(this.gamesRef.doc(id)).pipe(switchMap(x => of(x.data() as Game)))
   }
+
+  create(): Observable<Id> {
+    return this.rxFire.fromDocRef(this.gamesRef.doc()).pipe(
+      first(),
+      switchMap(document => {
+        return of(document.id)
+      })
+    )
+  }
 }

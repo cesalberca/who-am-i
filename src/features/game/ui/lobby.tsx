@@ -19,7 +19,13 @@ export const Lobby: React.FC = () => {
   const [name, setName] = useState('')
   const [celebrity, setCelebrity] = useState('')
   const [lobbyPlayers, setLobbyPlayers] = useState<Player[]>([])
-  const { getPlayersQry, startGameCmd, joinGameCmd, hasGameStartedQry } = useContext(Container)
+  const {
+    getPlayersQry,
+    startGameCmd,
+    joinLobbyCmd,
+    hasGameStartedQry,
+    createLobbyCmd
+  } = useContext(Container)
   const history = useHistory()
 
   const [state, dispatch] = useReducer(reducer, {
@@ -28,6 +34,17 @@ export const Lobby: React.FC = () => {
     celebrity: '',
     id: ''
   })
+
+  useEffect(() => {
+    if (state.status === 'created') {
+      createLobbyCmd
+        .execute()
+        .toPromise()
+        .then(x => {
+          dispatch({ type: 'join', id: x, celebrity: state.celebrity, name: state.name })
+        })
+    }
+  }, [state.name, state.celebrity, state.status, createLobbyCmd])
 
   useEffect(() => {
     let subscription: Subscription = EMPTY.subscribe()
@@ -56,35 +73,50 @@ export const Lobby: React.FC = () => {
     let subscription: Subscription = EMPTY.subscribe()
 
     if (state.status === 'joined') {
-      joinGameCmd
+      joinLobbyCmd
         .execute({ id: state.id, player: { name: state.name, celebrity: state.celebrity } })
         .toPromise()
       subscription = getPlayersQry.execute({ id: state.id }).subscribe(x => setLobbyPlayers(x))
     }
 
     return () => subscription.unsubscribe()
-  }, [state.id, state.status, state.name, state.celebrity, getPlayersQry, joinGameCmd])
+  }, [state.id, state.status, state.name, state.celebrity, getPlayersQry, joinLobbyCmd])
 
   return (
     <Page>
-      {state.status}
       {state.status === 'initial' && (
-        <div className={cx('form')}>
-          <h2>Join a lobby</h2>
-          <Input label="Id of lobby" value={id} onChange={setId} />
-          <Input label="Your name" value={name} onChange={setName} />
-          <Input label="The name of the celebrity" value={celebrity} onChange={setCelebrity} />
-          <Button
-            onClick={() => {
-              dispatch({ type: 'join', name, celebrity, id })
-            }}
-          >
-            Join
-          </Button>
-        </div>
+        <section>
+          <div className={cx('form')}>
+            <h2>Play</h2>
+            <Input label="Your name" value={name} onChange={setName} />
+            <Input label="The name of the celebrity" value={celebrity} onChange={setCelebrity} />
+            <footer className={cx('footer')}>
+              <div className={cx('group')}>
+                <Input label="Id of lobby" value={id} onChange={setId} />
+                <Button
+                  onClick={() => {
+                    dispatch({ type: 'join', name, celebrity, id })
+                  }}
+                >
+                  Join existing lobby
+                </Button>
+              </div>
+              <div className={cx('group')}>
+                <Button
+                  onClick={() => {
+                    dispatch({ type: 'create', name, celebrity })
+                  }}
+                >
+                  Create lobby
+                </Button>
+              </div>
+            </footer>
+          </div>
+        </section>
       )}
       {state.status === 'joined' && (
         <div>
+          <h2>Lobby Id {state.id}</h2>
           {lobbyPlayers.map(player => (
             <p key={player.name}>{player.name}</p>
           ))}

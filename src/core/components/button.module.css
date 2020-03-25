@@ -2,6 +2,7 @@
   border-radius: 9999px;
   color: var(--secondary-color);
   background-color: var(--primary-color);
+  border: 5px solid var(--primary-color);
   padding: var(--m);
   font-size: inherit;
 }

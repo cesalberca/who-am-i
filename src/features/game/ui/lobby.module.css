@@ -7,3 +7,19 @@
   width: 100%;
   margin-bottom: var(--m);
 }
+
+.footer {
+  display: flex;
+}
+
+.group:first-of-type {
+  border-right: 5px solid var(--primary-color);
+  margin-right: var(--m);
+  padding-right: var(--m);
+}
+
+.group {
+  padding: var(--m);
+  padding-left: 0;
+  padding-right: 0;
+}

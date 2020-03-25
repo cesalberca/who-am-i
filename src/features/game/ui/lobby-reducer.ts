@@ -8,6 +8,11 @@ type Action =
       id: Id
     }
   | {
+      type: 'create'
+      name: string
+      celebrity: string
+    }
+  | {
       type: 'initial'
     }
   | {
@@ -15,7 +20,7 @@ type Action =
     }
 
 interface State {
-  status: 'joined' | 'initial' | 'started'
+  status: 'joined' | 'initial' | 'started' | 'created'
   name: string
   celebrity: string
   id: Id
@@ -30,6 +35,13 @@ export function reducer(state: State, action: Action): State {
         name: action.name,
         celebrity: action.celebrity,
         status: 'joined'
+      }
+    case 'create':
+      return {
+        ...state,
+        name: action.name,
+        celebrity: action.celebrity,
+        status: 'created'
       }
     case 'start':
       return {
