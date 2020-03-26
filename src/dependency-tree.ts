@@ -8,6 +8,11 @@ import { GetPlayerAssigneesQry } from './features/game/application/get-player-as
 import { StartGameCmd } from './features/game/application/start-game-cmd'
 import { HasGameStartedQry } from './features/game/application/has-game-started-qry'
 import { CreateLobbyCmd } from './features/game/application/create-lobby-cmd'
+import { Runner } from './core/use-case/runner'
+import { ExecutorLink } from './core/use-case/links/executor-link'
+import { LoggerLink } from './core/use-case/links/logger-link'
+import { ConsoleLogger } from './core/logger/console-logger'
+import { CacheLink } from './core/use-case/links/cache-link'
 
 const gameFirestoreRepository = new GameFirestoreRepository(app, rxFire)
 
@@ -17,5 +22,6 @@ export const dependencyTree: Dependencies = {
   getPlayerAssigneesQry: new GetPlayerAssigneesQry(gameFirestoreRepository),
   startGameCmd: new StartGameCmd(gameFirestoreRepository),
   hasGameStartedQry: new HasGameStartedQry(gameFirestoreRepository),
-  createLobbyCmd: new CreateLobbyCmd(gameFirestoreRepository)
+  createLobbyCmd: new CreateLobbyCmd(gameFirestoreRepository),
+  runner: new Runner(new ExecutorLink(), new LoggerLink(new ConsoleLogger(window)), new CacheLink())
 }
