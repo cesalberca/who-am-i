@@ -17,7 +17,7 @@ export class GetPlayerAssigneesQry extends Query<Record<string, string>, Params>
       map(x => {
         const entries = Object.entries(x).map(([playerName, celebrity]) => [
           playerName,
-          playerName === name ? '***********' : celebrity
+          playerName === name ? '* * * * *' : celebrity
         ])
         return Object.fromEntries(entries)
       })

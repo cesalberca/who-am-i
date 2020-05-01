@@ -7,11 +7,21 @@ const cx = bind(styles)
 
 export const Page: React.FC = ({ children }) => {
   return (
-    <main>
-      <Header></Header>
+    <main className={cx('main')}>
+      <Header/>
       <section className={cx('page')}>
         <div className={cx('wrapper')}>{children}</div>
       </section>
+      <footer className={cx('footer')}>
+        <p>
+          Made with{' '}
+          <span role="img" aria-label="Love">
+            ❤
+          </span>
+          ️ from <a href="https://twitter.com/cesalberca">César Alberca</a> and{' '}
+          <a href="https://twitter.com/gregg_aisha">Aisha Gregg</a>
+        </p>
+      </footer>
     </main>
   )
 }

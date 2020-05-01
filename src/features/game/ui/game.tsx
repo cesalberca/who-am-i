@@ -28,9 +28,10 @@ export const Game: React.FC = () => {
 
   return (
     <Page>
+      <h2>Playing!</h2>
       {Object.entries(players).map(([player, celebrity]) => (
         <p key={player}>
-          {player} - {celebrity}
+          {player} → {celebrity}
         </p>
       ))}
     </Page>

@@ -1,6 +1,8 @@
 html,
 body {
   margin: 0;
+  height: 100%;
+  width: 100%;
 }
 
 body {
@@ -20,4 +22,12 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+#root {
+  height: 100%;
+}
+
+a {
+  color: var(--on-primary-color);
 }

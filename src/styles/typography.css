@@ -42,3 +42,11 @@ h5 {
 small {
   font-size: 0.8em;
 }
+
+strong {
+  font-weight: bold;
+}
+
+em {
+  font-style: italic;
+}

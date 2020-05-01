@@ -19,6 +19,7 @@ export const Lobby: React.FC = () => {
   const [name, setName] = useState('')
   const [celebrity, setCelebrity] = useState('')
   const [lobbyPlayers, setLobbyPlayers] = useState<Player[]>([])
+  const [hasCreatedLobby, setHasCreatedLobby] = useState(false)
   const {
     getPlayersQry,
     startGameCmd,
@@ -84,10 +85,19 @@ export const Lobby: React.FC = () => {
 
   return (
     <Page>
+      <details>
+        <summary>Instructions</summary>
+        <p>
+          Ask questions to the other players to try and guess what celebrity you've been assigned. If your question is answered with{' '}
+          <strong>yes</strong> you may continue asking questions. If your question is answered with{' '}
+          <strong>no</strong> the it's the next player's turn. Whoever guesses their name{' '}
+          <em>wins</em>!
+        </p>
+      </details>
       {state.status === 'initial' && (
         <section>
           <div className={cx('form')}>
-            <h2>Play</h2>
+            <h2 className={cx('play')}>Play</h2>
             <Input label="Your name" value={name} onChange={setName} />
             <Input label="The name of the celebrity" value={celebrity} onChange={setCelebrity} />
             <footer className={cx('footer')}>
@@ -113,6 +123,7 @@ export const Lobby: React.FC = () => {
                   disabled={name === '' || celebrity === ''}
                   onClick={() => {
                     dispatch({ type: 'create', name, celebrity })
+                    setHasCreatedLobby(true)
                   }}
                 >
                   Create lobby
@@ -124,17 +135,21 @@ export const Lobby: React.FC = () => {
       )}
       {state.status === 'joined' && (
         <div>
-          <h2>Lobby Id {state.id}</h2>
+          <h2 className={cx('lobby-id')}>Lobby Id {state.id}</h2>
+          <hr />
+          <h3>Players</h3>
           {lobbyPlayers.map(player => (
             <p key={player.name}>{player.name}</p>
           ))}
-          {<Button
-            onClick={() => {
-              dispatch({ type: "start" });
-            }}
-          >
-            Start game
-          </Button>}
+          {hasCreatedLobby && (
+            <Button
+              onClick={() => {
+                dispatch({ type: 'start' })
+              }}
+            >
+              Start game
+            </Button>
+          )}
         </div>
       )}
     </Page>

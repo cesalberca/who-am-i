@@ -9,7 +9,7 @@ export const onGameStart = functions.firestore.document('games/{gameId}').onUpda
   if (
     data?.start === undefined ||
     previousData?.start !== undefined ||
-    (data?.players?.length ?? 0) < 3
+    (data?.players?.length ?? 0) < 2
   ) {
     return null
   }
