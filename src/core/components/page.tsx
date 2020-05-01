@@ -8,7 +8,7 @@ const cx = bind(styles)
 export const Page: React.FC = ({ children }) => {
   return (
     <main className={cx('main')}>
-      <Header/>
+      <Header />
       <section className={cx('page')}>
         <div className={cx('wrapper')}>{children}</div>
       </section>
@@ -18,8 +18,14 @@ export const Page: React.FC = ({ children }) => {
           <span role="img" aria-label="Love">
             ❤
           </span>
-          ️ from <a href="https://twitter.com/cesalberca">César Alberca</a> and{' '}
-          <a href="https://twitter.com/gregg_aisha">Aisha Gregg</a>
+          ️ from{' '}
+          <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/cesalberca">
+            César Alberca
+          </a>{' '}
+          and{' '}
+          <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/gregg_aisha">
+            Aisha Gregg
+          </a>
         </p>
       </footer>
     </main>
