@@ -14,7 +14,7 @@ export class JoinLobbyCmd extends Command<Params> {
     super()
   }
 
-  onExecute({ id, player }: Params): Observable<void> {
+  internalExecute({ id, player }: Params): Observable<void> {
     return this.gameRepository.join(id, player)
   }
 }

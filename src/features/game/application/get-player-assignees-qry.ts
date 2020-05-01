@@ -11,7 +11,7 @@ export class GetPlayerAssigneesQry extends Query<Record<string, string>, Params>
     super()
   }
 
-  onExecute({ id, name }: Params): Observable<Record<string, string>> {
+  internalExecute({ id, name }: Params): Observable<Record<string, string>> {
     return this.gameRepository.find(id).pipe(
       map(x => x?.assignees ?? []),
       map(x => {

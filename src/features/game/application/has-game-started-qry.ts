@@ -11,7 +11,7 @@ export class HasGameStartedQry extends Query<boolean, Params> {
     super()
   }
 
-  onExecute({ id }: Params): Observable<boolean> {
+  internalExecute({ id }: Params): Observable<boolean> {
     return this.gameRepository.find(id).pipe(map(x => x?.start !== undefined ?? false))
   }
 }

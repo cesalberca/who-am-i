@@ -12,7 +12,7 @@ export class StartGameCmd extends Command<Params> {
     super()
   }
 
-  onExecute({ id }: Params): Observable<void> {
+  internalExecute({ id }: Params): Observable<void> {
     return this.gameRepository.start(id)
   }
 }

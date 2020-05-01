@@ -15,7 +15,8 @@
   /* Typography */
   --body-font: 'Work sans';
   --title-font: 'Work sans';
-  --body-size: 24px;
+  --body-size: 22px;
+  --body-size-mobile: 14px;
   --subtitle-size: 14px;
 
   /* Spacing */

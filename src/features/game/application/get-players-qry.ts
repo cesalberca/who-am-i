@@ -12,7 +12,7 @@ export class GetPlayersQry extends Query<Player[], Params> {
     super()
   }
 
-  onExecute({ id }: Params): Observable<Player[]> {
+  internalExecute({ id }: Params): Observable<Player[]> {
     return this.gameRepository.find(id).pipe(map(x => x?.players ?? []))
   }
 }

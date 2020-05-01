@@ -92,8 +92,14 @@ export const Lobby: React.FC = () => {
             <Input label="The name of the celebrity" value={celebrity} onChange={setCelebrity} />
             <footer className={cx('footer')}>
               <div className={cx('group')}>
-                <Input label="Id of lobby" value={id} onChange={setId} />
+                <Input
+                  label="Id of lobby"
+                  className={cx('join-lobby')}
+                  value={id}
+                  onChange={setId}
+                />
                 <Button
+                  disabled={id === ''}
                   onClick={() => {
                     dispatch({ type: 'join', name, celebrity, id })
                   }}
@@ -101,8 +107,10 @@ export const Lobby: React.FC = () => {
                   Join existing lobby
                 </Button>
               </div>
+              <hr className={cx('separator')} />
               <div className={cx('group')}>
                 <Button
+                  disabled={name === '' || celebrity === ''}
                   onClick={() => {
                     dispatch({ type: 'create', name, celebrity })
                   }}
@@ -120,13 +128,13 @@ export const Lobby: React.FC = () => {
           {lobbyPlayers.map(player => (
             <p key={player.name}>{player.name}</p>
           ))}
-          <Button
+          {<Button
             onClick={() => {
-              dispatch({ type: 'start' })
+              dispatch({ type: "start" });
             }}
           >
             Start game
-          </Button>
+          </Button>}
         </div>
       )}
     </Page>

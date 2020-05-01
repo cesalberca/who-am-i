@@ -8,7 +8,7 @@ export class CreateLobbyCmd extends Command<void, Id> {
     super()
   }
 
-  onExecute(): Observable<Id> {
+  internalExecute(): Observable<Id> {
     return this.gameRepository.create()
   }
 }

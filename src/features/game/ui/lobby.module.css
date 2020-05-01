@@ -9,17 +9,25 @@
 }
 
 .footer {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+  grid-gap: var(--s);
 }
 
-.group:first-of-type {
-  border-right: 5px solid var(--primary-color);
-  margin-right: var(--m);
-  padding-right: var(--m);
+.join-lobby {
+  margin-bottom: var(--s);
+}
+
+.separator {
+  width: 100%;
+  background-color: var(--primary-color);
 }
 
 .group {
-  padding: var(--m);
-  padding-left: 0;
-  padding-right: 0;
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .join-lobby {
+  }
 }
