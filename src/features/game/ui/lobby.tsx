@@ -88,9 +88,9 @@ export const Lobby: React.FC = () => {
       <details>
         <summary>Instructions</summary>
         <p>
-          Ask questions to the other players to try and guess what celebrity you've been assigned. If your question is answered with{' '}
+          Ask questions to the other players to try and guess which celebrity you've been assigned. If your question is answered with{' '}
           <strong>yes</strong> you may continue asking questions. If your question is answered with{' '}
-          <strong>no</strong> the it's the next player's turn. Whoever guesses their name{' '}
+          <strong>no</strong> then it's the next player's turn. Whoever guesses their name{' '}
           <em>wins</em>!
         </p>
       </details>
